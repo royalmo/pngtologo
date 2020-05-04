@@ -3,6 +3,7 @@
 
 from PIL import Image
 from pathlib import Path
+import tkinter as tk
 
 def png_to_logo(png_file, final_dimensions = [500, 500]):
 
@@ -43,3 +44,14 @@ if __name__ == "__main__":
 
     with open(output_file, "w") as fileout:
         fileout.write(png_to_logo(input_file))
+
+    from tkinter import *
+
+    window = Tk()
+    window.title("Logo Converter")
+    window.geometry('350x200')
+    lbl = Label(window, text="CONVERT IMAGE TO LOGO")
+    lbl.grid(column=0, row=0)
+    btn = Button(window, text="Click Me")
+    btn.grid(column=0, row=1)
+    window.mainloop()
