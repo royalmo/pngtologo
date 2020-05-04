@@ -4,28 +4,42 @@
 from PIL import Image
 from pathlib import Path
 
-directory_path = str(Path(__file__).parent.absolute()) + "/"
-input_file = "test.png"
-output_file =  str(input_file.split(".")[0:-1][0]) + ".txt"
-multiplier = 2.5
+def png_to_logo(png_file, final_dimensions = [500, 500]):
 
-im = Image.open(input_file, "r")
+    im = Image.open(input_file, "r")
+    pix_val = list(im.getdata())
+    size = im.size
+    im.close()
 
-pix_val = list(im.getdata())
-size = im.size
-print(size)
-im.close()
+    multiplier = [final_dimensions[0] / size[0], final_dimensions[1] / size[1]]
+    commands = ["pu home setpensize " + str(multiplier[1]) + " fd " + str(size[1]*multiplier[1]/2) + " rt 90 bk " + str(size[0]*multiplier[0]/2) + " pd"]
+    x = 0
+    y = 0
 
-result = "pu setpensize " + str(multiplier) + " fd " + str(size[1]*multiplier/2) + " rt 90 bk " + str(size[0]*multiplier/2) + " pd\n"
-x = 0
-y = 0
-for pixel in pix_val:
-    result += "color [" + str(pixel[0]) + " " + str(pixel[1]) + " " + str(pixel[2]) + "] fd " + str(multiplier) + " "
-    x += 1
-    if x == size[0]:
-        x = 0
-        y += 1
-        result += "pu bk " + str(size[0]*multiplier) + " rt 90 fd " + str(multiplier) + " lt 90 pd\n"
+    for pixel in pix_val:
+        commands.append("color [" + str(pixel[0]) + " " + str(pixel[1]) + " " + str(pixel[2]) + "] fd " + str(multiplier[0]))
+        x += 1
+        if x == size[0]:
+            x = 0
+            y += 1
+            commands.append("pu bk " + str(size[0]*multiplier[0]) + " rt 90 fd " + str(multiplier[1]) + " lt 90 pd")
 
-with open(output_file, "w") as fileout:
-    fileout.write(result)
+    # result = commands[0] + "\n"
+    # for line in range(1, len(commands)):
+    #     if commands[line] == commands[line-1]:
+    #         i = 0
+    #         while
+
+    result = ""
+    for line in commands[0:-1]:
+        line += "\n"
+        result += (line)
+    return result
+
+if __name__ == "__main__":
+    directory_path = str(Path(__file__).parent.absolute()) + "/"
+    input_file = "test.png"
+    output_file =  str(input_file.split(".")[0:-1][0]) + ".txt"
+
+    with open(output_file, "w") as fileout:
+        fileout.write(png_to_logo(input_file))
