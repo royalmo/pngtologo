@@ -25,17 +25,17 @@ def png_to_logo(png_file, final_dimensions = [500, 500]):
             y += 1
             commands.append("pu bk " + str(size[0]*multiplier[0]) + " rt 90 fd " + str(multiplier[1]) + " lt 90 pd")
 
-    # result = commands[0] + "\n"
-    # for line in range(1, len(commands)):
-    #     if commands[line] == commands[line-1]:
-    #         i = 0
-    #         while
+    """ result = commands[0] + "\n"
+    for line in range(1, len(commands)):
+        if commands[line] == commands[line-1]:
+            i = 0
+            while """
 
-    result = ""
+    result2 = ""
     for line in commands[0:-1]:
         line += "\n"
-        result += (line)
-    return result
+        result2 += line
+    return result2
 
 if __name__ == "__main__":
     directory_path = str(Path(__file__).parent.absolute()) + "/"
@@ -45,13 +45,11 @@ if __name__ == "__main__":
     with open(output_file, "w") as fileout:
         fileout.write(png_to_logo(input_file))
 
-    from tkinter import *
-
-    window = Tk()
+    window = tk.Tk()
     window.title("Logo Converter")
-    window.geometry('350x200')
-    lbl = Label(window, text="CONVERT IMAGE TO LOGO")
-    lbl.grid(column=0, row=0)
-    btn = Button(window, text="Click Me")
+    window.geometry('1000x600')
+    lbl = tk.Label(window, text="CONVERT IMAGE TO LOGO")
+    lbl.grid(column=1, row=0) 
+    btn = tk.Button(window, text="Click Me")
     btn.grid(column=0, row=1)
     window.mainloop()
